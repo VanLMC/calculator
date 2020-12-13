@@ -1,88 +1,123 @@
-let display = 0;
+let displayValue = "0";
+var digitos = document.getElementsByClassName("digito");
+var buttonLimpar = document.getElementById("limpar");
+var buttonEquals = document.getElementById("equals");
 
-const refreshDisplay = () => $('#numero').html(display);
+const refreshDisplay = () => document.getElementById("numero").innerHTML = displayValue;
+
+function setupDigists(){
+  
+    const digitClickEvent = function() {
+        const value = this.innerHTML;
+      
+        if(displayValue == 0){
+          displayValue = value;
+        }
+        else{
+          displayValue = displayValue + value;    
+        }
+      
+        refreshDisplay();
+    };
+
+    for (var i = 0; i < digitos.length; i++) {
+        digitos[i].addEventListener('click', digitClickEvent, false);
+    }
+
+}
 
 refreshDisplay();
-$('.digito').click(function (){
-  if(display == 0){
-    display = $(this).text();
-  }
-  else{
-    display = display + $(this).text(); 
-  }
+setupDigists();
 
-  refreshDisplay();
-})
+buttonEquals.addEventListener("click", calcular);
 
 
-$('#limpar').click(function () {
-  display = 0;
-  refreshDisplay();
-})
-
-
-
-
-$('#calcular').click(function(){
-    let Calculo = 0;
+function calcular(){
+    let calculation = 0;
   
-  if(display.includes("+")){
-    
-   soma = display.split("+");
-    for(let i = 0; i<soma.length; i++){
-      Calculo = parseInt(Calculo) + parseInt(soma[i])
-      console.log(Calculo)
+  if(displayValue.includes("+")){
+    calculation = sum(displayValue);
+  }
+  else if(displayValue.includes("-")){
+    calculation = subtract(displayValue);
+  }
+  else if(displayValue.includes("/")){
+    calculation = divide(displayValue);
+  }
+  else if(displayValue.includes("x")){
+    calculation = multiply(displayValue);
+  }
+  
+  displayValue = calculation;
+  refreshDisplay();
+}
+
+buttonLimpar.addEventListener("click", function (){
+  displayValue = 0;
+  refreshDisplay();
+});
+
+
+
+function sum(displayValue){
+  
+    let sumValue = 0;
+     sum = displayValue.split("+");
+    for(let i = 0; i<sum.length; i++){
+      sumValue = parseInt(sumValue) + parseInt(sum[i]);
     }
-    
-    console.log(Calculo)
-  }
   
-  console.log(Calculo)
+    return sumValue;
+}
 
 
-  if(display.includes("-")){
-    
-    subtracao = display.split("-");
-    for(let i = 0; i<subtracao.length; i++){
+function subtract(displayValue){
+  
+    let subtractionValue = 0;
+  
+    subtraction = displayValue.split("-");
+    for(let i = 0; i<subtraction.length; i++){
       if(i == 0){
-        Calculo = parseInt(subtracao[i])
+        subtractionValue = parseInt(subtraction[i])
       }
       else {
-        Calculo = parseInt(Calculo) - parseInt(subtracao[i])
+        subtractionValue = parseInt(subtractionValue) - parseInt(subtraction[i])
       }
     }
-
-  }
   
-  if(display.includes("x")){
-    
-    multiplicacao = display.split("x");
-    for(let i = 0; i<multiplicacao.length; i++){
+    return subtractionValue;
+}
+
+
+function divide(displayValue){
+  
+   let divisionValue = 0;
+  
+     division = displayValue.split("/");
+    for(let i = 0; i<division.length; i++){
       if(i == 0){
-        Calculo = parseInt(multiplicacao[i])
+        divisionValue = parseInt(division[i])
       }
       else{
-        Calculo = parseInt(Calculo) * parseInt(multiplicacao[i])
+        divisionValue = parseInt(divisionValue) / parseInt(division[i])
       }
       }
-
-  }
   
-  if(display.includes("/")){
-    
-    divisao = display.split("/");
-    for(let i = 0; i<divisao.length; i++){
+    return divisionValue;
+}
+
+
+function multiply(displayValue){
+     let multiplicationValue = 0;
+  
+      multiply = displayValue.split("x");
+    for(let i = 0; i<multiply.length; i++){
       if(i == 0){
-        Calculo = parseInt(divisao[i])
+        multiplicationValue = parseInt(multiply[i])
       }
       else{
-        Calculo = parseInt(Calculo) / parseInt(divisao[i])
+        multiplicationValue = parseInt(multiplicationValue) * parseInt(multiply[i])
       }
       }
-
-  }
-  
-    console.log('calculoooo' +Calculo)
-    display = Calculo
-    refreshDisplay();
-})
+   return multiplicationValue;
+}
